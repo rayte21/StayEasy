@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Бронювання номера в готелі</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--tx:#1b2340;--mut:#6b7491;--bd:#e1e5f0;--ac:#2f5bea;--acx:#fff;--ok:#1a9a5b;--dis:#e9ecf4;--hi:#e8eeff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141f;--card:#1a2030;--tx:#e9ecf6;--mut:#99a2bd;--bd:#2a3248;--ac:#6d8dff;--acx:#0d1226;--ok:#3ccf8a;--dis:#252c41;--hi:#232c4d}}
+:root[data-theme="dark"]{--bg:#10141f;--card:#1a2030;--tx:#e9ecf6;--mut:#99a2bd;--bd:#2a3248;--ac:#6d8dff;--acx:#0d1226;--ok:#3ccf8a;--dis:#252c41;--hi:#232c4d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+header{display:flex;align-items:center;gap:12px;padding:12px 20px;background:var(--card);border-bottom:1px solid var(--bd);position:sticky;top:env(safe-area-inset-top,0px);z-index:5;flex-wrap:wrap}
+.logo{font-weight:800;font-size:20px;color:var(--ac);cursor:pointer}
+nav{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.btn{border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:9px 16px;border-radius:10px;font:inherit;cursor:pointer}
+.btn:hover{border-color:var(--ac)}
+.pri{background:var(--ac);color:var(--acx);border-color:var(--ac);font-weight:700}
+.pri:hover{opacity:.9}
+main{max-width:1000px;margin:0 auto;padding:20px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:20px}
+h1{font-size:28px;margin:0 0 6px}h2{font-size:20px;margin:0 0 12px}h3{margin:0 0 4px;font-size:17px}
+.mut{color:var(--mut);font-size:14px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:end}
+.f{flex:1;min-width:150px;display:flex;flex-direction:column;gap:4px}
+label{font-size:13px;color:var(--mut)}
+input,select{padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit;width:100%}
+.hero{padding:40px 24px;text-align:center}
+.steps{display:flex;gap:8px;margin-bottom:16px;font-size:14px}
+.st{flex:1;padding:8px;border-radius:10px;background:var(--dis);text-align:center;color:var(--mut)}
+.st.on{background:var(--ac);color:var(--acx);font-weight:700}
+.grid{display:grid;grid-template-columns:240px 1fr;gap:16px}
+@media(max-width:760px){.grid,.two{grid-template-columns:1fr!important}}
+.hotel{display:flex;gap:14px;margin-bottom:12px;cursor:pointer;padding:14px}
+.hotel:hover{border-color:var(--ac)}
+.img{width:150px;min-height:110px;border-radius:12px;background:linear-gradient(135deg,#7aa2ff,#b78cff);display:grid;place-items:center;font-size:38px;flex:none}
+.tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:20px;background:var(--hi);color:var(--ac);margin:4px 4px 0 0}
+.tag.g{color:var(--ok)}
+.rate{background:var(--ac);color:var(--acx);padding:2px 8px;border-radius:8px;font-weight:700;font-size:14px}
+.price{font-size:20px;font-weight:800}
+.sp{margin-left:auto;text-align:right;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end}
+.heart{cursor:pointer;font-size:22px;background:none;border:0;color:var(--mut)}
+.heart.on{color:#e5484d}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;max-width:340px}
+.d{padding:7px 0;border-radius:8px;font-size:14px}.d.x{background:var(--dis);color:var(--mut);text-decoration:line-through}.d.s{background:var(--ac);color:var(--acx);font-weight:700}.d.h{font-size:12px;color:var(--mut)}
+.two{display:grid;grid-template-columns:1fr 340px;gap:16px}
+.sum div{display:flex;justify-content:space-between;padding:6px 0}
+.tot{border-top:1px solid var(--bd);font-weight:800;font-size:18px;margin-top:6px}
+.big{text-align:center;padding:30px}.ck{width:72px;height:72px;border-radius:50%;background:var(--ok);color:#fff;font-size:40px;display:grid;place-items:center;margin:0 auto 12px}
+.tabs{display:flex;gap:8px;margin-bottom:12px}.tabs .btn.on{background:var(--ac);color:var(--acx)}
+.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:10px;display:none;z-index:9}
+</style>
+</head>
+<body>
+<header>
+  <span class="logo" onclick="go('search')">🏨 StayEasy</span>
+  <nav>
+    <button class="btn" onclick="go('search')">Пошук</button>
+    <button class="btn" onclick="go('mine')">Мої бронювання</button>
+    <button class="btn" id="tg" onclick="theme()">🌙 Тема</button>
+  </nav>
+</header>
+<main id="app"></main>
+<div class="toast" id="toast"></div>
+<script>
+var H=[
+ {id:0,n:'Hotel Opera',s:5,r:9.2,rv:412,km:0.3,p:2400,e:'🏛️',t:['Сніданок включено','Безкоштовне скасування'],rooms:[{n:'Стандарт, 1 гість',p:2400,a:'Wi-Fi · Кондиціонер · 18 м²'},{n:'Делюкс, 2 гості',p:2950,a:'Wi-Fi · Балкон · 26 м²'}]},
+ {id:1,n:'Центр Інн',s:4,r:8.6,rv:238,km:0.6,p:1850,e:'🏨',t:['Безкоштовне скасування'],rooms:[{n:'Економ, 1 гість',p:1850,a:'Wi-Fi · Душ · 14 м²'},{n:'Комфорт, 2 гості',p:2300,a:'Wi-Fi · Сніданок · 20 м²'}]},
+ {id:2,n:'Старе Місто Apartments',s:3,r:8.1,rv:97,km:0.9,p:1500,e:'🏘️',t:['Сніданок включено'],rooms:[{n:'Студія, 2 гості',p:1500,a:'Wi-Fi · Кухня · 22 м²'}]},
+ {id:3,n:'Grand Lviv',s:5,r:9.0,rv:520,km:1.2,p:3600,e:'🏰',t:['Безкоштовне скасування','Спа'],rooms:[{n:'Люкс, 2 гості',p:3600,a:'Wi-Fi · Спа · 35 м²'}]}
+];
+var S={city:'Львів',in:'12.12',out:'15.12',g:1,n:3,maxp:2500,minr:8,free:false,sort:'p',h:null,room:null,fav:{},book:[{h:'Hotel Opera',d:'20–23 січня',st:'Майбутнє',p:7560},{h:'Центр Інн',d:'3–5 жовтня',st:'Минуле',p:3885},{h:'Grand Lviv',d:'1–3 серпня',st:'Скасоване',p:7560}],tab:'Майбутнє',guest:{name:'Олена Коваль',mail:'olena@mail.com',tel:'+380 67 123 45 67'},pay:'Картка'};
+var $=function(i){return document.getElementById(i)};
+function go(r){location.hash=r}
+function theme(){var r=document.documentElement;r.setAttribute('data-theme',r.getAttribute('data-theme')==='dark'?'light':'dark')}
+function toast(m){var t=$('toast');t.textContent=m;t.style.display='block';setTimeout(function(){t.style.display='none'},1800)}
+function steps(n){return '<div class="steps">'+['1. Дані гостя','2. Оплата','3. Підтвердження'].map(function(x,i){return '<div class="st'+(i+1===n?' on':'')+'">'+x+'</div>'}).join('')+'</div>'}
+function money(x){return x.toLocaleString('uk-UA')+' грн'}
+function calc(){var rp=S.room?S.room.p:0,b=rp*S.n,f=Math.round(b*0.05);return{b:b,f:f,t:b+f,rp:rp}}
+function stars(n){return '★'.repeat(n)}
+
+function vSearch(){return '<div class="card hero"><h1>Знайдіть готель за хвилини</h1><p class="mut">Підсумкова ціна з усіма зборами — одразу.</p><div class="row" style="text-align:left;margin-top:20px"><div class="f"><label>Місто</label><input id="c" value="'+S.city+'"></div><div class="f"><label>Заїзд 📅</label><input value="12.12.2026"></div><div class="f"><label>Виїзд 📅</label><input value="15.12.2026"></div><div class="f"><label>Гості</label><select><option>1 гість</option><option>2 гості</option><option>3 гості</option></select></div><button class="btn pri" onclick="go(\'results\')">Знайти</button></div></div><div class="card" style="margin-top:16px"><h2>Популярні напрямки</h2><span class="tag">Львів</span><span class="tag">Київ</span><span class="tag">Одеса</span><span class="tag">Карпати</span></div>'}
+
+function list(){var a=H.filter(function(h){return h.p<=S.maxp&&h.r>=S.minr&&(!S.free||h.t.indexOf('Безкоштовне скасування')>-1)});a.sort(function(x,y){return S.sort==='p'?x.p-y.p:y.r-x.r});return a}
+function vResults(){var a=list();var cards=a.length?a.map(function(h){return '<div class="card hotel" onclick="S.h='+h.id+';S.room=null;go(\'hotel\')"><div class="img">'+h.e+'</div><div><h3>'+h.n+'</h3><div class="mut">'+stars(h.s)+' · '+h.km+' км від центру</div><div style="margin:6px 0"><span class="rate">'+h.r+'</span> <span class="mut">'+h.rv+' відгуків</span></div>'+h.t.map(function(t){return '<span class="tag g">'+t+'</span>'}).join('')+'</div><div class="sp"><button class="heart'+(S.fav[h.id]?' on':'')+'" onclick="event.stopPropagation();S.fav['+h.id+']=!S.fav['+h.id+'];vr()">'+(S.fav[h.id]?'♥':'♡')+'</button><div><div class="mut">від</div><div class="price">'+money(h.p)+'</div><div class="mut">за ніч</div></div></div></div>'}).join(''):'<div class="card big"><div style="font-size:40px">🔍</div><h3>Нічого не знайдено</h3><p class="mut">Спробуйте збільшити ціну або прибрати фільтри.</p></div>';
+return '<h1>Львів · 12–15 грудня · 1 гість</h1><p class="mut">Знайдено варіантів: <b>'+a.length+'</b></p><div class="grid"><div class="card" style="align-self:start"><h2>Фільтри</h2><label>Ціна до: <b>'+money(S.maxp)+'</b></label><input type="range" min="1000" max="4000" step="100" value="'+S.maxp+'" oninput="S.maxp=+this.value;vr()"><div style="height:12px"></div><label>Рейтинг від</label><select onchange="S.minr=+this.value;vr()">'+[0,7,8,9].map(function(x){return '<option value="'+x+'"'+(x===S.minr?' selected':'')+'>'+(x||'Будь-який')+'</option>'}).join('')+'</select><div style="height:12px"></div><label style="display:flex;gap:8px;align-items:center;color:var(--tx)"><input type="checkbox" style="width:auto"'+(S.free?' checked':'')+' onchange="S.free=this.checked;vr()"> Безкоштовне скасування</label><div style="height:12px"></div><label>Сортування</label><select onchange="S.sort=this.value;vr()"><option value="p"'+(S.sort==='p'?' selected':'')+'>За ціною</option><option value="r"'+(S.sort==='r'?' selected':'')+'>За рейтингом</option></select></div><div id="lst">'+cards+'</div></div>'}
+function vr(){$('app').innerHTML=vResults()}
+
+function cal(){var days=['Пн','Вт','Ср','Чт','Пт','Сб','Нд'],o=days.map(function(d){return '<div class="d h">'+d+'</div>'}).join('');for(var i=0;i<1;i++)o+='<div></div>';for(var d=1;d<=21;d++){var c='d';if(d>=12&&d<=15)c+=' s';else if(d===7||d===8||d===19)c+=' x';o+='<div class="'+c+'">'+d+'</div>'}return '<div class="cal">'+o+'</div><p class="mut">Грудень 2026 · сірі дати зайняті</p>'}
+function vHotel(){var h=H[S.h];return '<p><a href="#results" style="color:var(--ac)">← До результатів</a></p><div class="card"><div class="row" style="align-items:center"><div class="img" style="width:100%;max-width:260px;height:160px;font-size:60px">'+h.e+'</div><div style="flex:1;min-width:220px"><h1>'+h.n+'</h1><div class="mut">'+stars(h.s)+' · '+h.km+' км від центру</div><p><span class="rate">'+h.r+'</span> <span class="mut">'+h.rv+' відгуків</span></p>'+h.t.map(function(t){return '<span class="tag g">'+t+'</span>'}).join('')+'</div></div></div><div class="grid" style="grid-template-columns:1fr 360px;margin-top:16px"><div><h2>Доступні номери</h2>'+h.rooms.map(function(r,i){return '<div class="card" style="margin-bottom:12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><div class="img" style="width:90px;min-height:70px;font-size:26px">🛏️</div><div style="flex:1;min-width:150px"><h3>'+r.n+'</h3><div class="mut">'+r.a+'</div><span class="tag g">Безкоштовне скасування</span></div><div style="text-align:right"><div class="price">'+money(r.p)+'</div><div class="mut">за ніч</div><button class="btn pri" style="margin-top:6px" onclick="S.room=H['+h.id+'].rooms['+i+'];go(\'booking\')">Забронювати</button></div></div>'}).join('')+'<div class="card"><h2>Відгуки</h2><p><b>Анна, 9/10</b> — Чудове розташування, швидке заселення.</p><p><b>Максим, 8/10</b> — Чисто й тихо. Сніданок смачний.</p></div></div><div class="card" style="align-self:start"><h2>Доступність</h2>'+cal()+'</div></div>'}
+
+function vBooking(){if(!S.room)S.room=H[S.h===null?0:S.h].rooms[0];if(S.h===null)S.h=0;var c=calc(),h=H[S.h];return steps(1)+'<div class="two"><div class="card"><h2>Дані гостя</h2><div class="row"><div class="f"><label>Ім’я та прізвище</label><input value="'+S.guest.name+'"></div><div class="f"><label>E-mail</label><input value="'+S.guest.mail+'"></div></div><div class="row" style="margin-top:12px"><div class="f"><label>Телефон</label><input value="'+S.guest.tel+'"></div><div class="f"><label>Спосіб оплати 💳</label><select><option>Картка</option><option>Apple Pay</option><option>Google Pay</option><option>Оплата в готелі</option></select></div></div><label style="display:flex;gap:8px;align-items:center;margin-top:14px;color:var(--tx)"><input type="checkbox" checked style="width:auto"> Запам’ятати мої дані</label><p class="mut">✔ Безкоштовне скасування до 10 грудня</p><button class="btn pri" style="width:100%;padding:13px" onclick="addB();go(\'done\')">Підтвердити бронювання</button></div><div class="card sum" style="align-self:start"><h2>Підсумок</h2><div class="mut" style="padding:0">'+h.n+' · '+S.room.n+'</div><div class="mut" style="padding:0 0 8px">12–15 грудня · '+S.n+' ночі</div><div><span>'+money(c.rp)+' × '+S.n+'</span><span>'+money(c.b)+'</span></div><div><span>Збори та податки</span><span>'+money(c.f)+'</span></div><div class="tot"><span>Разом</span><span>'+money(c.t)+'</span></div></div></div>'}
+function addB(){var c=calc();if(!S.added){S.book.unshift({h:H[S.h].n,d:'12–15 грудня',st:'Майбутнє',p:c.t});S.added=1}}
+
+function vDone(){var c=calc(),h=H[S.h===null?0:S.h];return steps(3)+'<div class="card big"><div class="ck">✓</div><h1>Бронювання підтверджено ✓</h1><p class="mut">Підтвердження надіслано на '+S.guest.mail+'</p><div class="card" style="max-width:380px;margin:16px auto;text-align:left"><div class="mut">Номер підтвердження</div><div class="price">BK-482916</div><p style="margin:8px 0 0">'+h.n+'<br>12–15 грудня · 1 гість<br><b>'+money(c.t)+'</b></p></div><button class="btn pri" onclick="go(\'mine\')">Мої бронювання</button></div>'}
+
+function vMine(){var tabs=['Майбутнє','Минуле','Скасоване'];var a=S.book.filter(function(b){return b.st===S.tab});return '<h1>Мої бронювання</h1><div class="tabs">'+tabs.map(function(t){return '<button class="btn'+(t===S.tab?' on':'')+'" onclick="S.tab=\''+t+'\';mr()">'+t+' ('+S.book.filter(function(b){return b.st===t}).length+')</button>'}).join('')+'</div>'+(a.length?a.map(function(b,i){return '<div class="card" style="margin-bottom:12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><div class="img" style="width:80px;min-height:60px;font-size:26px">🏨</div><div style="flex:1"><h3>'+b.h+'</h3><div class="mut">'+b.d+' · '+money(b.p)+'</div><span class="tag'+(b.st==='Майбутнє'?' g':'')+'">'+b.st+'</span></div>'+(b.st==='Майбутнє'?'<button class="btn">Змінити дати</button><button class="btn" style="color:#e5484d" onclick="cancel(\''+b.h+'\')">Скасувати</button>':'')+'</div>'}).join(''):'<div class="card big mut">Тут поки порожньо</div>')}
+function mr(){$('app').innerHTML=vMine()}
+function cancel(n){if(confirm('Скасувати бронювання «'+n+'»?')){S.book.forEach(function(b){if(b.h===n&&b.st==='Майбутнє'){b.st='Скасоване'}});toast('Бронювання скасовано');mr()}}
+
+var V={search:vSearch,results:vResults,hotel:vHotel,booking:vBooking,done:vDone,mine:vMine};
+function route(){var r=location.hash.slice(1)||'search';if(!V[r])r='search';if(S.h===null&&(r==='hotel'))S.h=0;$('app').innerHTML=V[r]();scrollTo(0,0)}
+addEventListener('hashchange',route);route();
+</script>
+</body>
+</html>
